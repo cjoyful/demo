@@ -48,7 +48,7 @@
   import { EditOutlined } from "@ant-design/icons-vue";
   import type { UnwrapRef } from "vue";
   import type { Rule } from "ant-design-vue/es/form";
-
+  
   const isEdit = ref(false);
   const formRef = ref();
   interface FormState {
@@ -170,6 +170,7 @@
           if (errors.length > 0) {
             console.log(errors);
           } else {
+            isEdit.value = false;
             setData(toRaw(formState));
             message.success("修改成功");
           }
@@ -181,9 +182,10 @@
     //
   };
   //获取profile信息接口
+  const host = window.location.host;
   const getProfile = function (callback: any) {
     const request = new XMLHttpRequest();
-    request.open("GET", "http://localhost:3000/profiles");
+    request.open("GET", "http://" + "localhost" + ":3000/profiles");
     request.send();
     request.addEventListener("load", () => {
       const status = request.status;
@@ -204,7 +206,7 @@
   //更新profile信息接口
   const updateProfile = function (callback: any) {
     const request = new XMLHttpRequest();
-    request.open("PUT", "http://localhost:3000/profiles/" + formState.id);
+    request.open("PUT", "http://" + "localhost" + ":3000/profiles/" + formState.id);
     request.setRequestHeader("Content-Type", "application/json");
     request.send(JSON.stringify(toRaw(formState)));
     request.addEventListener("load", () => {
@@ -227,6 +229,9 @@
   };
   const labelCol = { style: { width: "150px" } };
   const wrapperCol = { span: 10 };
+
+  //const host = window.location.host;
+  //console.log(host);
 </script>
 
 <style scoped>
