@@ -1,0 +1,77 @@
+<script setup>
+import { ref } from 'vue';
+defineProps({
+  msg: String,
+});
+
+const count = ref(0);
+
+  import sqlite3 from 'sqlite3';
+
+  const sqlite3 = require('sqlite3').verbose();
+
+// 创建一个新的数据库实例，数据库文件是 mydb.db
+let db = new sqlite3.Database('./mydb.db', (err) => {
+  if (err) {
+    console.error(err.message);
+  } else {
+    console.log('Connected to the mydb.db database.');
+  }
+});
+
+// 创建一个表
+db.run(`CREATE TABLE IF NOT EXISTS lorem (info TEXT)`);
+
+// 插入一些数据
+const insert = 'INSERT INTO lorem VALUES (?)';
+db.run(insert, 'Ipsum dolor sit amet');
+
+// 查询数据
+db.all('SELECT * FROM lorem', (err, rows) => {
+  if (err) {
+    throw err;
+  }
+  rows.forEach((row) => {
+    console.log(row.info);
+  });
+});
+
+// 关闭数据库连接
+db.close((err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log('Close the database connection.');
+});
+
+
+</script>
+
+<template>
+  <h1>{{ msg }}</h1>
+
+  <div class="card">
+    <button type="button" @click="count++">count is {{ count }}</button>
+    <p>
+      Edit
+      <code>components/HelloWorld.vue</code> to test HMR
+    </p>
+  </div>
+
+  <p>
+    Check out
+    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank">create-vue</a>, the official Vue + Vite
+    starter
+  </p>
+  <p>
+    Learn more about IDE Support for Vue in the
+    <a href="https://vuejs.org/guide/scaling-up/tooling.html#ide-support" target="_blank">Vue Docs Scaling up Guide</a>.
+  </p>
+  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+</template>
+
+<style scoped>
+.read-the-docs {
+  color: #888;
+}
+</style>
